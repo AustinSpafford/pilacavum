@@ -13,7 +13,15 @@ public class VelociGripper : MonoBehaviour
 	[Tooltip("Increasing the mass of an object gives a sense of strength when observing collisions.")]
 	public float GrippedObjectMassMultiplier = 5.0f;
 
+	[SerializeField] // Make this only exposed/changeable in the editor.
+	private GameObject grippedObject = null;
+
 	public bool DebugEnabled = false;
+
+	public void Awake()
+	{
+		velocityTracker = GetComponent<VelocityTracker>();
+	}
 
 	public void FixedUpdate()
 	{
@@ -90,6 +98,12 @@ public class VelociGripper : MonoBehaviour
 				{
 					grippedRigidBody.useGravity = true;
 				}
+
+				if (velocityTracker != null)
+				{
+					grippedRigidBody.velocity = velocityTracker.AverageLinearVelocity;
+					grippedRigidBody.angularVelocity = velocityTracker.AverageAngularVelocity;
+				}
 			}
 
 			grippedObject = null;
@@ -97,8 +111,7 @@ public class VelociGripper : MonoBehaviour
 		}
 	}
 
-	[SerializeField]
-	private GameObject grippedObject = null;
-
 	private bool grippedObjectUsedGravity = false;
+
+	private VelocityTracker velocityTracker = null;
 }
