@@ -13,6 +13,12 @@ public class VelociGripper : MonoBehaviour
 	[Tooltip("Increasing the mass of an object gives a sense of strength when observing collisions.")]
 	public float GrippedObjectMassMultiplier = 5.0f;
 
+	[Tooltip("Increasing the linear velocity of released objects gives the throw \"oopmh\".")]
+	public float ReleasedLinearVelocityMultiplier = 1.0f;
+
+	[Tooltip("Increasing the angular velocity of released objects might just feel weird.")]
+	public float ReleasedAngularVelocityMultiplier = 1.0f;
+
 	[SerializeField] // Make this only exposed/changeable in the editor.
 	private GameObject grippedObject = null;
 
@@ -101,8 +107,11 @@ public class VelociGripper : MonoBehaviour
 
 				if (velocityTracker != null)
 				{
-					grippedRigidBody.velocity = velocityTracker.AverageLinearVelocity;
-					grippedRigidBody.angularVelocity = velocityTracker.AverageAngularVelocity;
+					grippedRigidBody.velocity = 
+						(velocityTracker.AverageLinearVelocity * ReleasedLinearVelocityMultiplier);
+
+					grippedRigidBody.angularVelocity = 
+						(velocityTracker.AverageAngularVelocity * ReleasedAngularVelocityMultiplier);
 				}
 			}
 
