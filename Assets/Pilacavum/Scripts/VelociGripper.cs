@@ -19,9 +19,6 @@ public class VelociGripper : MonoBehaviour
 	[Tooltip("Increasing the angular velocity of released objects might just feel weird.")]
 	public float ReleasedAngularVelocityMultiplier = 1.0f;
 
-	[SerializeField] // Make this only exposed/changeable in the editor.
-	private GameObject grippedObject = null;
-
 	public bool DebugEnabled = false;
 
 	public void Awake()
@@ -119,7 +116,8 @@ public class VelociGripper : MonoBehaviour
 			grippedObjectUsedGravity = false;
 		}
 	}
-
+	
+	private GameObject grippedObject = null;
 	private bool grippedObjectUsedGravity = false;
 
 	private VelocityTracker velocityTracker = null;
