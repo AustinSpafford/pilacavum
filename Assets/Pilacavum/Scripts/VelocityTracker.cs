@@ -8,8 +8,6 @@ public class VelocityTracker : MonoBehaviour
 	[SerializeField] // Make this only exposed/changeable in the editor.
 	private float AveragingWindowSeconds = 0.2f;
 
-	public bool DebugEnabled = false;
-
 	public Vector3 AverageLinearVelocity { get; private set; }
 	public Vector3 AverageAngularVelocity { get; private set; }
 
@@ -69,14 +67,6 @@ public class VelocityTracker : MonoBehaviour
 				AverageLinearVelocity -= linearVelocityIncrementHistory.Dequeue();
 				AverageAngularVelocity -= angularVelocityIncrementHistory.Dequeue();
 			}
-		}
-		
-		if (DebugEnabled)
-		{
-			Debug.LogFormat(
-				"linear{0}, angular{1}", 
-				AverageLinearVelocity.ToString(), 
-				AverageAngularVelocity.ToString());
 		}
 	}
 

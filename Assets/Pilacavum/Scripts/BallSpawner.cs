@@ -39,7 +39,6 @@ public class BallSpawner : MonoBehaviour
 		}
 	}
 	
-	[SerializeField]
 	private int spawnedBallCount = 0;
 
 	private float remainingSecondsUntilBallSpawn = 0.0f;
