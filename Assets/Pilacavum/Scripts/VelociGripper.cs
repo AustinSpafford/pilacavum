@@ -6,9 +6,12 @@ public class VelociGripper : MonoBehaviour
 	public float PositionCorrectionMetersPerSecondPerDeltaMeter = 50.0f;
 
 	[Tooltip("If the gripped object is ever beyond this distance, it's snapped to the gripper.")]
-	public float LeashDistance = 1.0f;
+	public float LeashDistance = 0.5f;
 
 	public bool RemoveGravityFromGrippedObjects = true;
+
+	[Tooltip("Increasing the mass of an object gives a sense of strength when observing collisions.")]
+	public float GrippedObjectMassMultiplier = 5.0f;
 
 	public bool DebugEnabled = false;
 
@@ -44,16 +47,18 @@ public class VelociGripper : MonoBehaviour
 		{
 			ReleaseObject();
 		}
+		
+		Rigidbody targetRigidBody = targetObject.GetComponent<Rigidbody>();
 
-		if (RemoveGravityFromGrippedObjects)
+		if (targetRigidBody != null)
 		{
-			Rigidbody targetRigidBody = targetObject.GetComponent<Rigidbody>();
+			targetRigidBody.mass *= GrippedObjectMassMultiplier;
 
-			if ((targetRigidBody != null) &&
-				targetRigidBody.useGravity)
+			grippedObjectUsedGravity = targetRigidBody.useGravity;
+
+			if (RemoveGravityFromGrippedObjects)
 			{
 				targetRigidBody.useGravity = false;
-				gravityWasRemovedFromGrippedObject = true;
 			}
 		}
 
@@ -73,20 +78,27 @@ public class VelociGripper : MonoBehaviour
 			{
 				Debug.LogFormat("Releasing [0].", grippedObject.name);
 			}
+		
+			Rigidbody grippedRigidBody = grippedObject.GetComponent<Rigidbody>();
 
-			if (gravityWasRemovedFromGrippedObject)
+			if (grippedRigidBody != null)
 			{
-				grippedObject.GetComponent<Rigidbody>().useGravity = true;
-
-				gravityWasRemovedFromGrippedObject = false;
+				grippedRigidBody.mass /= GrippedObjectMassMultiplier;
+				
+				if (RemoveGravityFromGrippedObjects &&
+					grippedObjectUsedGravity)
+				{
+					grippedRigidBody.useGravity = true;
+				}
 			}
 
 			grippedObject = null;
+			grippedObjectUsedGravity = false;
 		}
 	}
 
 	[SerializeField]
 	private GameObject grippedObject = null;
 
-	private bool gravityWasRemovedFromGrippedObject = false;
+	private bool grippedObjectUsedGravity = false;
 }

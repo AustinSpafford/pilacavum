@@ -43,6 +43,7 @@ MonoBehaviour:
   PositionCorrectionMetersPerSecondPerDeltaMeter: 50
   LeashDistance: 0.5
   RemoveGravityFromGrippedObjects: 1
+  GrippedObjectMassMultiplier: 5
   DebugEnabled: 0
   grippedObject: {fileID: 0}
 --- !u!114 &11475562
