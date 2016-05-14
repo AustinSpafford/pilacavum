@@ -38,9 +38,12 @@ public class VelocityTracker : MonoBehaviour
 			orientationChange.ToAngleAxis(
 				out orientationChangeAngle,
 				out orientationChangeAxis);
-
-			immediateAngularVelocity = 
-				(orientationChangeAxis * (orientationChangeAngle / Time.fixedDeltaTime));
+			
+			// NOTE: ToAngleAxis() returns an axis with NaN-components when the angle approaches zero.
+			immediateAngularVelocity = (
+				(orientationChangeAngle > Mathf.Epsilon) ?
+					(orientationChangeAxis * (orientationChangeAngle / Time.fixedDeltaTime)) :
+					Vector3.zero);
 				
 			lastKnownPosition = transform.position;
 			lastKnownOrientation = transform.rotation;
