@@ -3,7 +3,9 @@ using System.Collections;
 
 public class VelociGripper : MonoBehaviour
 {
-	public float PositionCorrectionMetersPerSecondPerDeltaMeter = 50.0f;
+	public float PositionCorrectionMetersPerSecondPerDeltaMeters = 100.0f;
+	public float OrientationCorrectionDegreesPerSecondPerDeltaDegrees = 1.0f;
+	public float OrientationCorrectionMaxDegreesPerSecond = 360.0f;
 
 	[Tooltip("If the gripped object is ever beyond this distance, it's snapped to the gripper.")]
 	public float LeashDistance = 0.5f;
@@ -46,7 +48,25 @@ public class VelociGripper : MonoBehaviour
 			else
 			{
 				grippedRigidBody.velocity =
-					(objectToGripperPositionDelta * PositionCorrectionMetersPerSecondPerDeltaMeter);
+					(objectToGripperPositionDelta * PositionCorrectionMetersPerSecondPerDeltaMeters);				
+			
+				Quaternion objectToGripperRotation =
+					(transform.rotation * Quaternion.Inverse(grippedObject.transform.rotation));
+			
+				float objectToGripperRotationAngle;
+				Vector3 objectToGripperRotationAxis;
+				objectToGripperRotation.ToAngleAxis(
+					out objectToGripperRotationAngle,
+					out objectToGripperRotationAxis);
+
+				if (objectToGripperRotationAngle > 180)
+				{
+					objectToGripperRotationAngle -= 360;
+				}
+				
+				grippedRigidBody.angularVelocity = (
+					objectToGripperRotationAxis *
+					(objectToGripperRotationAngle * OrientationCorrectionDegreesPerSecondPerDeltaDegrees));
 			}
 		}
 	}
@@ -66,11 +86,15 @@ public class VelociGripper : MonoBehaviour
 			targetRigidBody.mass *= GrippedObjectMassMultiplier;
 
 			grippedObjectUsedGravity = targetRigidBody.useGravity;
+			grippedObjectPriorMaxAngularVelocity = targetRigidBody.maxAngularVelocity;
 
 			if (RemoveGravityFromGrippedObjects)
 			{
 				targetRigidBody.useGravity = false;
 			}
+
+			// Increase the maximum angular velocity to keep the rotation from feeling sluggish.
+			targetRigidBody.maxAngularVelocity = OrientationCorrectionMaxDegreesPerSecond;
 		}
 
 		grippedObject = targetObject;
@@ -101,6 +125,8 @@ public class VelociGripper : MonoBehaviour
 				{
 					grippedRigidBody.useGravity = true;
 				}
+				
+				grippedRigidBody.maxAngularVelocity = grippedObjectPriorMaxAngularVelocity;
 
 				if (velocityTracker != null)
 				{
@@ -119,6 +145,7 @@ public class VelociGripper : MonoBehaviour
 	
 	private GameObject grippedObject = null;
 	private bool grippedObjectUsedGravity = false;
+	private float grippedObjectPriorMaxAngularVelocity = 0.0f;
 
 	private VelocityTracker velocityTracker = null;
 }

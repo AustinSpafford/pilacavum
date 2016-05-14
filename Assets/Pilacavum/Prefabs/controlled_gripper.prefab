@@ -43,7 +43,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AveragingWindowSeconds: 0.15
-  DebugEnabled: 0
 --- !u!114 &11434360
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -66,13 +65,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a355dbe3abb950d43ac1810e5e381252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PositionCorrectionMetersPerSecondPerDeltaMeter: 50
+  PositionCorrectionMetersPerSecondPerDeltaMeters: 50
+  OrientationCorrectionDegreesPerSecondPerDeltaDegrees: 1
+  OrientationCorrectionMaxDegreesPerSecond: 360
   LeashDistance: 0.5
   RemoveGravityFromGrippedObjects: 1
   GrippedObjectMassMultiplier: 5
   ReleasedLinearVelocityMultiplier: 1.75
   ReleasedAngularVelocityMultiplier: 1
-  grippedObject: {fileID: 0}
   DebugEnabled: 0
 --- !u!114 &11475562
 MonoBehaviour:
