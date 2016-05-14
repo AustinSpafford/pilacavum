@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BallSpawner : MonoBehaviour
 {
-	public GameObject BallPrefab = null;
+	public GameObject[] BallPrefabs = null;
 
 	public int TotalBallCount = 100;
 	public float BallsPerSecond = 10.0f;
@@ -26,7 +26,7 @@ public class BallSpawner : MonoBehaviour
 
 				GameObject newBall = 
 					GameObject.Instantiate(
-						BallPrefab,
+						BallPrefabs[randomSequence.Next(BallPrefabs.Length)],
 						randomBallPosition,
 						Random.rotationUniform) as GameObject;
 
@@ -42,4 +42,6 @@ public class BallSpawner : MonoBehaviour
 	private int spawnedBallCount = 0;
 
 	private float remainingSecondsUntilBallSpawn = 0.0f;
+
+	private System.Random randomSequence = new System.Random();
 }
