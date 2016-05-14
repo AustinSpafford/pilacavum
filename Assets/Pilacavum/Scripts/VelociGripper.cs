@@ -3,7 +3,7 @@ using System.Collections;
 
 public class VelociGripper : MonoBehaviour
 {
-	public float PositionCorrectionMetersPerSecondPerDeltaMeters = 100.0f;
+	public float PositionCorrectionMetersPerSecondPerDeltaMeters = 50.0f;
 	public float OrientationCorrectionDegreesPerSecondPerDeltaDegrees = 1.0f;
 	public float OrientationCorrectionMaxDegreesPerSecond = 360.0f;
 
