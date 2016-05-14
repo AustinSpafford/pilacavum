@@ -53,11 +53,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a355dbe3abb950d43ac1810e5e381252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PositionCorrectionMetersPerSecondPerDeltaMeter: 50
+  PositionCorrectionMetersPerSecondPerDeltaMeters: 50
+  OrientationCorrectionDegreesPerSecondPerDeltaDegrees: 1
+  OrientationCorrectionMaxDegreesPerSecond: 360
   LeashDistance: 0.5
   RemoveGravityFromGrippedObjects: 1
+  GrippedObjectMassMultiplier: 5
+  ReleasedLinearVelocityMultiplier: 1
+  ReleasedAngularVelocityMultiplier: 1
   DebugEnabled: 0
-  grippedObject: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
